@@ -5,4 +5,6 @@ First PHP practise app - Todo List
 - Delete tasks
 - Mark as complete
 
-MySQL DB, styled using MaterializeCSS
+PHP, MySQL DB, styled using MaterializeCSS
+
+![image of webpage](/img/php_mysql_todo.png)
