@@ -10,11 +10,6 @@
     //fetch result rows in turn in to array
     $tasks = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-    //  //free result from memory
-    // mysqli_free_result($result);
-
-    //  //close connection to database
-    // mysqli_close($conn);
 
 
     //new task submission
@@ -44,6 +39,21 @@
 
     //     mysqli_query($conn, $sql);
     // }
+
+        //update task status
+        if(isset($_GET['task_id']) && isset($_GET['current_status'])){
+            $id = $_GET['task_id'];
+            $current_state = $_GET['current_status'];
+
+            if($current_state){
+                mysqli_query($conn, "UPDATE tasks SET completed= 0 WHERE id = $id");
+            } else {
+                mysqli_query($conn, "UPDATE tasks SET completed= 1 WHERE id = $id");
+            }
+    
+            // mysqli_query($conn, $sql);
+            header('location: index.php');
+        }
 
         // Delete task from list
         if (isset($_GET['del_task'])) {
@@ -124,9 +134,9 @@
             <div class="card horizontal">
                 <div class="card-content">
                         <?php if($task['completed']): ?>
-                            <span onclick="update_task_status(<?php echo $task['id']; ?> ,<?php echo $task['completed'];?>)" style="font-size: 20px; color: green;"><?php echo "☑"; ?></span>
+                            <a href="index.php?task_id=<?php echo $task['id'];?>&current_status=<?php echo $task['completed'];?>" style="font-size: 20px; color: green;"> ☑</a>
                         <?php else:?>
-                            <span onclick="update_task_status(<?php echo $task['id']; ?> ,<?php echo $task['completed'];?>)" style="font-size: 20px;"><?php echo "☐";?></span>
+                            <a href="index.php?task_id=<?php echo $task['id'];?>&current_status=<?php echo $task['completed'];?>" style="font-size: 20px;">☐</a>
                         <?php endif;?>
                     <span><?php echo htmlspecialchars($task['description']); ?></span>
                 </div>
