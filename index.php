@@ -33,6 +33,26 @@
         }
     }
 
+    //     function update_task_status($id, $current_state){
+    //     include('db_connect.php');
+
+    //     if($current_state){
+    //         $sql = "UPDATE tasks SET 'completed'= 0 WHERE 'id' = $id";
+    //     } else {
+    //         $sql = "UPDATE tasks SET 'completed'= 1 WHERE 'id' = $id";
+    //     }
+
+    //     mysqli_query($conn, $sql);
+    // }
+
+        // Delete task from list
+        if (isset($_GET['del_task'])) {
+            $id = $_GET['del_task'];
+        
+            mysqli_query($conn, "DELETE FROM tasks WHERE id=$id");
+            header('location: index.php');
+        }
+
 ?>
 
 <!DOCTYPE html>
@@ -74,6 +94,9 @@
             margin-top: 15px;
             margin-bottom: 20px;
         }
+        .card.horizontal{
+            justify-content: space-between;
+        }
     </style>
 </head>
 <body>
@@ -99,17 +122,16 @@
         <section class="list-container">
         <?PHP foreach($tasks as $task):?>
             <div class="card horizontal">
-                <div class="card-title">
-                    <h4><?php echo htmlspecialchars($task['description']); ?></h4>
-                </div>
                 <div class="card-content">
-                    <p>
                         <?php if($task['completed']): ?>
-                            <p style="font-size: 20px; color: green;"><?php echo "☑"; ?></p>
+                            <span onclick="update_task_status(<?php echo $task['id']; ?> ,<?php echo $task['completed'];?>)" style="font-size: 20px; color: green;"><?php echo "☑"; ?></span>
                         <?php else:?>
-                            <p style="font-size: 20px;"><?php echo "☐";?></p>
+                            <span onclick="update_task_status(<?php echo $task['id']; ?> ,<?php echo $task['completed'];?>)" style="font-size: 20px;"><?php echo "☐";?></span>
                         <?php endif;?>
-                    </p>
+                    <span><?php echo htmlspecialchars($task['description']); ?></span>
+                </div>
+                <div class="card-action">
+                    <a href="index.php?del_task=<?php echo $task['id']; ?> ">delete</a>
                 </div>
             </div>
         <?PHP endforeach; ?>
